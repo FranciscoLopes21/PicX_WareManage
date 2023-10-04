@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WareHouse</string>
+    <string name="signUp">Sign Up</string>
+    <string name="button">click button</string>
+    <string name="dialogTitle">Lose Data</string>
+    <string name="dialogMessage">Se sair vai perder os seus dados. Deseja sair?</string>
+</resources>
