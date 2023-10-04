@@ -16,6 +16,9 @@
         android:theme="@style/Theme.WareHouse"
         tools:targetApi="31">
         <activity
+            android:name=".DashBoardActivity"
+            android:exported="false" />
+        <activity
             android:name=".AtividadeProduto"
             android:exported="false" />
         <activity

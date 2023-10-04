@@ -175,7 +175,7 @@ class AtividadeProduto : AppCompatActivity() {
         // Configurar a ação positiva (Yes)
         builder.setPositiveButton("Yes") { _, _ ->
             DeleteAtividade()
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, DashBoardActivity::class.java)
             startActivity(intent)
         }
 

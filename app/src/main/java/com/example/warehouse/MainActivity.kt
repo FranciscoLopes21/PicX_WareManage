@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
@@ -34,8 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var warehouseList: ArrayList<Warehouse>
     private lateinit var warehouseAdapter : WarehouseAdapter
     private var db = Firebase.firestore
-    private lateinit var cardAtividadeCreate : CardView
-    private lateinit var txtTotalWarehouses: TextView
+    private lateinit var ibtn_backMain: ImageButton
 
     private val staticWarehouseList = listOf(
         Warehouse("1", "Armazém 1", "user1"),
@@ -53,10 +53,9 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.rcl_warehouses)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-        cardAtividadeCreate = findViewById(R.id.cardAtividadeCreate)
-        txtTotalWarehouses = findViewById(R.id.txtTotalWarehouses)
         idFABAdd = findViewById(R.id.idFABAdd)
+        ibtn_backMain = findViewById(R.id.ibtn_backMain)
+
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         var id = currentUser?.uid
@@ -68,8 +67,6 @@ class MainActivity : AppCompatActivity() {
         val swipeToDeleteCallback = SwipeToDeleteCallback(warehouseAdapter, warehouseViewModel)
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
-
-        Log.d("WarehouseViewModel", warehouseViewModel.getNWarehouses(txtTotalWarehouses).toString())
 
         warehouseViewModel.warehouses.observe(this) { warehouses ->
 
@@ -83,17 +80,15 @@ class MainActivity : AppCompatActivity() {
 
         warehouseViewModel.loadUserWarehouses()
 
-        //idFABAdd = findViewById(R.id.idFABAdd)
-        warehouseViewModel.getNWarehouses(txtTotalWarehouses)
-
         idFABAdd.setOnClickListener{
 
             showDialog()
 
         }
 
-        cardAtividadeCreate.setOnClickListener {
-            showDialogAtividade()
+        ibtn_backMain.setOnClickListener {
+            val intent = Intent(this, DashBoardActivity::class.java)
+            startActivity(intent)
         }
 
     }

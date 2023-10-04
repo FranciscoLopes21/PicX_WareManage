@@ -59,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
             firebaseAuth.signInWithEmailAndPassword(campoEmail, campoPass).addOnCompleteListener {
                 if (it.isSuccessful){
 
-                    val activity = Intent(this, MainActivity::class.java)
+                    val activity = Intent(this, DashBoardActivity::class.java)
                     //intent.putExtra("key", value)
                     startActivity(activity)
                     finish()

@@ -59,7 +59,7 @@ class RegistActivity : AppCompatActivity() {
 
         firebaseAuth.createUserWithEmailAndPassword(campoEmail, campoPass).addOnCompleteListener {
             if (it.isSuccessful){
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, DashBoardActivity::class.java)
                 startActivity(intent)
             }else{
                 Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
