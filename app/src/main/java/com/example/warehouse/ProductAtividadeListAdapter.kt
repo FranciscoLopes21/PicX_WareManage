@@ -1,29 +1,30 @@
 package com.example.warehouse
 
-import android.content.Intent
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.Models.Warehouse
+import com.airbnb.lottie.LottieAnimationView
 import com.example.warehouse.Models.AtividadeProdutos
 import com.example.warehouse.Models.Product
+import com.example.warehouse.ViewModels.AtividadeListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class ProductAtividadeListAdapter (val productatividadeList: ArrayList<AtividadeProdutos>) :
+class ProductAtividadeListAdapter(
+    val productatividadeList: ArrayList<AtividadeProdutos>,
+    private val atividadeListViewModel: AtividadeListViewModel,) :
                         RecyclerView.Adapter<ProductAtividadeListAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.txtNomeProduct)
         val quant: TextView = itemView.findViewById(R.id.txtQuantProduct)
         val warehouse: TextView = itemView.findViewById(R.id.txtWareouse)
+        val lottieDelete: LottieAnimationView = itemView.findViewById(R.id.animationView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,6 +42,11 @@ class ProductAtividadeListAdapter (val productatividadeList: ArrayList<Atividade
         holder.name.text = productatividadeList[position].prodNome.toString()
         holder.quant.text = productatividadeList[position].quantProd.toString()
         holder.warehouse.text = productatividadeList[position].warehouseNome.toString()
+        holder.lottieDelete.setOnClickListener {
+            holder.lottieDelete.playAnimation()
+            atividadeListViewModel.deleteActivityByProductId(product.idAtividade, product.idProd)
+
+        }
 
     }
 

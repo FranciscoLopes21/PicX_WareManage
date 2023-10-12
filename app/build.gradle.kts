@@ -63,4 +63,6 @@ dependencies {
     implementation ("androidx.recyclerview:recyclerview:1.2.1") // ou versão mais recente
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0") // ou versão mais recente
 
+    implementation ("com.airbnb.android:lottie:3.4.0")
+
 }

@@ -122,7 +122,7 @@ class AtividadeListViewModel : ViewModel (){
 
                                 val quantProd = (document.get("quantProd") as? Long)?.toInt() ?: 0
 
-// Acesse a quantidade de produtos na lista de produtos
+                                // Acesse a quantidade de produtos na lista de produtos
                                 val quantProdListaProdutos = (productDocument.get("quantProd") as? Long)?.toInt() ?: 0
 
                                 // Calcule a nova quantidade na lista de produtos
@@ -191,6 +191,61 @@ class AtividadeListViewModel : ViewModel (){
                 _atividade.value = productsList
             }
     }
+
+    fun deleteActivityByProductId(idAtividade: String, idProdToDelete: String) {
+        val atividadeListRef = db.collection("atividadeList")
+        val productsRef = db.collection("products")
+
+        val query = atividadeListRef
+            .whereEqualTo("idAtividade", idAtividade)
+            .whereEqualTo("idProd", idProdToDelete)
+
+        query.get()
+            .addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot) {
+                    val idProd = document.getString("idProd")
+
+                    if (idProd != null) {
+                        // Consultar o documento do produto
+                        val productRef = productsRef.document(idProd)
+
+                        productRef.get()
+                            .addOnSuccessListener { productDocument ->
+                                val quantProdAtividade = document.getLong("quantProd") ?: 0
+                                val quantProdProduto = productDocument.getLong("quantProd") ?: 0
+
+                                // Calcular a nova quantidade no produto
+                                val novaQuantidadeProduto = quantProdProduto + quantProdAtividade
+
+                                // Atualizar a quantidade no produto
+                                productRef.update("quantProd", novaQuantidadeProduto)
+                                    .addOnSuccessListener {
+                                        // Produto atualizado com sucesso
+                                        // Agora exclua o documento da atividade
+                                        atividadeListRef.document(document.id)
+                                            .delete()
+                                            .addOnSuccessListener {
+                                                // Atividade excluída com sucesso
+                                            }
+                                            .addOnFailureListener { exception ->
+                                                // Trate os erros ao excluir a atividade
+                                            }
+                                    }
+                                    .addOnFailureListener { exception ->
+                                        // Trate os erros ao atualizar a quantidade no produto
+                                    }
+                            }
+                            .addOnFailureListener { exception ->
+                                // Trate os erros ao buscar o documento do produto
+                            }
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                // Trate os erros ao buscar a lista de atividades
+            }
+    }
+
 
 
 }
