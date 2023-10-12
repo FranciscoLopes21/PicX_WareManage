@@ -70,4 +70,21 @@ class AtividadeViewModel : ViewModel (){
             }
     }
 
+    fun getWarehouseNameById(atividadeId: String, txtNomeAtividade: TextView) {
+
+        db.collection("atividade")
+            .document(atividadeId)
+            .get()
+            .addOnSuccessListener { documentSnapshot  ->
+
+                txtNomeAtividade.text = documentSnapshot.getString("nomeAtividade")
+                // Faça o que desejar com o número de armazéns
+            }
+            .addOnFailureListener { e ->
+                // Trate o erro, se ocorrer algum
+                println("Erro ao buscar armazéns: $e")
+            }
+
+    }
+
 }
