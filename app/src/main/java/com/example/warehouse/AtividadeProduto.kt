@@ -1,16 +1,12 @@
 package com.example.warehouse
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,7 +21,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 
 class AtividadeProduto : AppCompatActivity() {
-
     private lateinit var ibtn_backMain: ImageButton
     private lateinit var Spin_warehouseName: Spinner
     private lateinit var warehouseViewModel: WarehouseViewModel
@@ -41,7 +36,9 @@ class AtividadeProduto : AppCompatActivity() {
     var atividadeId = ""
     var nomeAtividade = ""
     var warehouseId = ""
+    private var isFinishingActivity = false
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_atividade_produto)
@@ -68,7 +65,7 @@ class AtividadeProduto : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = productAdapterAtividade
 
-        atividadeViewModel.getWarehouseNameById(atividadeId,txtNomeAtividade)
+        atividadeViewModel.getWarehouseNameById(atividadeId, txtNomeAtividade)
 
         atividadeViewModel.atividadeId.observe(this, Observer { atividadeId ->
             initializeAdapter(atividadeId)
@@ -142,6 +139,7 @@ class AtividadeProduto : AppCompatActivity() {
             .setIcon(android.R.drawable.ic_dialog_alert)
 
         builder.setPositiveButton("Yes") { _, _ ->
+            isFinishingActivity = true
             DeleteAtividade()
             val intent = Intent(this, DashBoardActivity::class.java)
             startActivity(intent)
@@ -165,21 +163,19 @@ class AtividadeProduto : AppCompatActivity() {
         showExitConfirmationDialog()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        DeleteAtividade()
-    }
-
-    override fun onStop(){
+    override fun onStop() {
         super.onStop()
-        DeleteAtividade()
+        if (!isFinishingActivity) {
+            DeleteAtividade()
+        }
     }
 
-    private fun showDialog(){
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showDialog() {
         val bottomDialog = BottomSheetDialog(this)
         val bottomView = layoutInflater.inflate(R.layout.bottomsheetdialog_listaprodutos, null)
         var recyclerView: RecyclerView
-        var productAtividadeListAdapter : ProductAtividadeListAdapter
+        var productAtividadeListAdapter: ProductAtividadeListAdapter
 
         recyclerView = bottomView.findViewById(R.id.rcl_productslista)
         var btnConfirm = bottomView.findViewById<MaterialButton>(R.id.Btn_Confirm)
@@ -188,7 +184,7 @@ class AtividadeProduto : AppCompatActivity() {
         productAtividadeListAdapter = ProductAtividadeListAdapter(ArrayList(), atividadeListViewModel)
         recyclerView.adapter = productAtividadeListAdapter
 
-        atividadeListViewModel.atividades.observe(this){atividades ->
+        atividadeListViewModel.atividades.observe(this) { atividades ->
             productAtividadeListAdapter.productatividadeList.clear()
             productAtividadeListAdapter.productatividadeList.addAll(atividades)
             productAtividadeListAdapter.notifyDataSetChanged()
@@ -197,6 +193,11 @@ class AtividadeProduto : AppCompatActivity() {
         atividadeListViewModel.loadUserProducts(atividadeId)
 
         btnConfirm.setOnClickListener {
+            isFinishingActivity = true
+            atividadeViewModel.finalizarAtividade(atividadeId)
+            finish()
+            val intent = Intent(this, DashBoardActivity::class.java)
+            startActivity(intent)
             bottomDialog.dismiss()
         }
 
@@ -204,3 +205,4 @@ class AtividadeProduto : AppCompatActivity() {
         bottomDialog.show()
     }
 }
+

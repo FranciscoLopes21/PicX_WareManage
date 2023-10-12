@@ -1,5 +1,7 @@
 package com.example.warehouse.Models
 
+import java.time.LocalDate
+
 class AtividadeProdutos(
     var idListProd: String = "",
     var idAtividade: String = "",
