@@ -1,12 +1,15 @@
 package com.example.warehouse.ViewModels
 
+import android.os.Build
 import android.util.Log
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.warehouse.Models.Atividade
 import com.google.firebase.firestore.FirebaseFirestore
+import java.time.LocalDate
 
 class AtividadeViewModel : ViewModel (){
 
@@ -85,6 +88,21 @@ class AtividadeViewModel : ViewModel (){
                 println("Erro ao buscar armazéns: $e")
             }
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun finalizarAtividade(atividadeId: String) {
+        val map = atividade.toFinalizarMap()
+
+        db.collection("atividade")
+            .document(atividadeId)
+            .update(map)
+            .addOnSuccessListener {
+                // A atualização foi bem-sucedida.
+            }
+            .addOnFailureListener { e ->
+                // Trate o erro de atualização.
+            }
     }
 
 }
