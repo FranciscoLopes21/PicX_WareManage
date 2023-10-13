@@ -27,6 +27,7 @@ class DashBoardActivity : AppCompatActivity() {
     private lateinit var cardAtividadeCreate : CardView
     private lateinit var cardWarehousesData : CardView
     private lateinit var txtTotalWarehouses: TextView
+    private lateinit var cardListAtividades : CardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,7 @@ class DashBoardActivity : AppCompatActivity() {
         cardAtividadeCreate = findViewById(R.id.cardAtividadeCreate)
         cardWarehousesData = findViewById(R.id.cardWarehousesData)
         txtTotalWarehouses = findViewById(R.id.txtTotalWarehouses)
+        cardListAtividades = findViewById(R.id.cardListAtividades)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         var id = currentUser?.uid
@@ -52,6 +54,11 @@ class DashBoardActivity : AppCompatActivity() {
 
         cardWarehousesData.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        cardListAtividades.setOnClickListener {
+            val intent = Intent(this, ListAtividadesActivity::class.java)
             startActivity(intent)
         }
 

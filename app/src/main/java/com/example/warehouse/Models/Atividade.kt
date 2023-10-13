@@ -2,14 +2,17 @@ package com.example.warehouse.Models
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.google.firebase.Timestamp
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.Date
 
 class Atividade (
     var idAtividade : String = "",
     var nomeAtividade : String = "",
     var descricao : String = "",
     var ativo : Boolean = true,
-    var dataFinalizacao: LocalDate? = null
+    var dataFinalizacao: Timestamp? = null
 ){
     // Construtor vazio necessário para a desserialização do Firestore
     constructor() : this("", "", "",  true, null)
@@ -26,11 +29,8 @@ class Atividade (
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun toFinalizarMap(): Map<String, Any?> {
-        val dataFinalizacao = LocalDate.now()
-        val formattedDate = dataFinalizacao.toString()
-        return mapOf(
-            "dataFinalizacao" to formattedDate
-        )
+        val dataAtual = Timestamp.now()
+        return mapOf("dataFinalizacao" to dataAtual)
     }
 
 }
