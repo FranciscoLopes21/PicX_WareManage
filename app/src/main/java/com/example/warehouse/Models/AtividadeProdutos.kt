@@ -29,6 +29,12 @@ class AtividadeProdutos(
         )
     }
 
+    fun toUpdateMap(nomeWarehouse: String): Map<String, Any?> {
+        return mapOf(
+            "warehouseNome" to nomeWarehouse
+        )
+    }
+
     fun toUpdateQuantMap(quantUpdate: Int): Map<String, Any?> {
         return mapOf(
             "quantProd" to quantUpdate
