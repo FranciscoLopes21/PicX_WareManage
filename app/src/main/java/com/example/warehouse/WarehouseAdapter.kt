@@ -65,20 +65,23 @@ class WarehouseAdapter(
 
             // on below line we are creating a variable for our button
             // which we are using to dismiss our dialog.
-            var btnConfirm = bottomView.findViewById<MaterialButton>(R.id.Btn_Confirm)
-            var campoWarehouse = bottomView.findViewById<TextInputEditText>(R.id.EdtWareHouse)
-            var layoutWarehouse = bottomView.findViewById<TextInputLayout>(R.id.txtInputWareHouseName)
-            var campoDescWarehouse = bottomView.findViewById<TextInputEditText>(R.id.EdtDescWareHouse)
+            val btnConfirm = bottomView.findViewById<MaterialButton>(R.id.Btn_Confirm)
+            val campoWarehouse = bottomView.findViewById<TextInputEditText>(R.id.EdtWareHouse)
+            val layoutWarehouse = bottomView.findViewById<TextInputLayout>(R.id.txtInputWareHouseName)
+            val campoDescWarehouse = bottomView.findViewById<TextInputEditText>(R.id.EdtDescWareHouse)
+            val txt_create_Edit_Activity = bottomView.findViewById<TextView>(R.id.txt_create_Edit_Activity)
 
             campoWarehouse.setText(warehouseList[position].name.toString())
             campoDescWarehouse.setText(warehouseList[position].desc.toString())
+            txt_create_Edit_Activity.setText(R.string.bsd_warehouse)
             // on below line we are adding on click listener
             // for our dismissing the dialog button.
             btnConfirm.setOnClickListener {
                 // on below line we are calling a dismiss
                 // method to close our dialog.
-                var nomeWarehouse = campoWarehouse.text.toString()
-                var descWarehouse = campoDescWarehouse.text.toString()
+                val nomeWarehouse = campoWarehouse.text.toString()
+                val descWarehouse = campoDescWarehouse.text.toString()
+
                 if(nomeWarehouse.isEmpty()){
                     layoutWarehouse.error = "Campo vazio"
                 }else {
