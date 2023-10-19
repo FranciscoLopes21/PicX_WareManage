@@ -7,7 +7,9 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.Models.Warehouse
 import com.example.warehouse.Models.Atividade
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
 
@@ -105,4 +107,24 @@ class AtividadeViewModel : ViewModel (){
             }
     }
 
+    // ...
+
+    fun loadUserAtividades() {
+        db.collection("atividade")
+            .addSnapshotListener { querySnapshot, e ->
+                if (e != null) {
+                    // Trate o erro
+                    return@addSnapshotListener
+                }
+                val atividadesList = mutableListOf<Atividade>()
+                for (document in querySnapshot!!) {
+                    val atividade = document.toObject(Atividade::class.java)
+                    atividade?.let {
+                        it.idAtividade = document.id
+                        atividadesList.add(it)
+                    }
+                }
+                _atividade.value = atividadesList
+            }
+    }
 }

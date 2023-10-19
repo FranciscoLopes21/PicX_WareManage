@@ -18,6 +18,13 @@ class Warehouse (
         )
     }
 
+    fun toUpdateMap(nomeWarehouse: String, descWarehouse: String): Map<String, Any?> {
+        return mapOf(
+            "name" to nomeWarehouse,
+            "desc" to descWarehouse
+        )
+    }
+
     override fun toString(): String {
         return name
     }

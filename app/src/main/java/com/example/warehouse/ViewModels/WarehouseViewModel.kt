@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.Models.Warehouse
+import com.example.warehouse.Models.AtividadeProdutos
 import com.google.firebase.auth.FirebaseAuth
 
 class WarehouseViewModel : ViewModel() {
@@ -69,16 +70,40 @@ class WarehouseViewModel : ViewModel() {
             }
     }
 
-    fun updateWarehouseName(warehouseId: String, newName: String) {
-        val warehouseRef = db.collection("warehouses").document(warehouseId)
+    fun updateWarehouseName(warehouseId: String, warehouseName: String, DescWarehouse: String) {
 
-        val updates = hashMapOf<String, Any>(
-            "name" to newName
-        )
+        val warehouse = Warehouse() // Usando a classe Warehouse
+        val warehouseData = warehouse.toUpdateMap(warehouseName, DescWarehouse)
 
-        warehouseRef
-            .update(updates)
+        val atividadeProd = AtividadeProdutos() // Usando a classe Warehouse
+        val atividadeProdData = atividadeProd.toUpdateMap(warehouseName)
+        val atividadeListRef = db.collection("atividadeList")
+
+        val query = atividadeListRef
+            .whereEqualTo("idWarehouse", warehouseId)
+
+        db.collection("warehouses")
+            .document(warehouseId)
+            .update(warehouseData)
             .addOnSuccessListener {
+
+                query.get()
+                    .addOnSuccessListener { querySnapshot ->
+                        for (document in querySnapshot) {
+                            atividadeListRef.document(document.id)
+                                .update(atividadeProdData)
+                                .addOnSuccessListener {
+                                    // A atualização foi bem-sucedida
+                                    Log.d("WarehouseViewModel", "Nome da Warehouse atualizado com sucesso")
+                                }
+                                .addOnFailureListener {e ->
+                                    // Trate o erro de atualização
+                                    Log.e("WarehouseViewModel", "Erro ao atualizar nome da Warehouse: ${e.message}", e)
+                                }
+                        }
+                    }
+
+
                 // A atualização foi bem-sucedida
                 Log.d("WarehouseViewModel", "Nome da Warehouse atualizado com sucesso")
             }

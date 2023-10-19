@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -61,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         var id = currentUser?.uid
         Toast.makeText(this, "$id", Toast.LENGTH_SHORT).show()
 
-        warehouseAdapter = WarehouseAdapter(ArrayList())
+        warehouseAdapter = WarehouseAdapter(ArrayList(),warehouseViewModel)
         recyclerView.adapter = warehouseAdapter
 
         val swipeToDeleteCallback = SwipeToDeleteCallback(warehouseAdapter, warehouseViewModel)
