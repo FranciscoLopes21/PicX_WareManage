@@ -4,4 +4,5 @@
     <string name="button">click button</string>
     <string name="dialogTitle">Lose Data</string>
     <string name="dialogMessage">Se sair vai perder os seus dados. Deseja sair?</string>
+    <string name="bsd_warehouse">Editar Armazém</string>
 </resources>

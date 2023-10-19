@@ -16,6 +16,7 @@
         app:cornerRadius="100dp"/>
 
     <TextView
+        android:id="@+id/txt_create_Edit_Activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="New Warehouse"
