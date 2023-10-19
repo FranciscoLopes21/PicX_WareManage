@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.ViewModels.WarehouseViewModel
 import com.example.warehouse.ViewModels.AtividadeViewModel
+import com.example.warehouse.ViewModels.AuthenticationViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -23,9 +24,11 @@ class DashBoardActivity : AppCompatActivity() {
 
     private lateinit var warehouseViewModel: WarehouseViewModel
     private lateinit var atividadeViewModel: AtividadeViewModel
+    private lateinit var authenticationViewModel: AuthenticationViewModel
 
     private lateinit var cardAtividadeCreate : CardView
     private lateinit var cardWarehousesData : CardView
+    private lateinit var sdf : CardView
     private lateinit var txtTotalWarehouses: TextView
     private lateinit var cardListAtividades : CardView
     private lateinit var ibtn_logout : ImageButton
@@ -36,15 +39,17 @@ class DashBoardActivity : AppCompatActivity() {
 
         warehouseViewModel = ViewModelProvider(this).get(WarehouseViewModel::class.java)
         atividadeViewModel = ViewModelProvider(this).get(AtividadeViewModel::class.java)
+        authenticationViewModel = ViewModelProvider(this).get(AuthenticationViewModel::class.java)
 
         cardAtividadeCreate = findViewById(R.id.cardAtividadeCreate)
         cardWarehousesData = findViewById(R.id.cardWarehousesData)
+        sdf = findViewById(R.id.sdf)
         txtTotalWarehouses = findViewById(R.id.txtTotalWarehouses)
         cardListAtividades = findViewById(R.id.cardListAtividades)
         ibtn_logout = findViewById(R.id.ibtn_logout)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
-        var id = currentUser?.uid
+        val id = currentUser?.uid
         Toast.makeText(this, "$id", Toast.LENGTH_SHORT).show()
 
         //idFABAdd = findViewById(R.id.idFABAdd)
@@ -65,7 +70,7 @@ class DashBoardActivity : AppCompatActivity() {
         }
 
         ibtn_logout.setOnClickListener {
-
+            logOut()
         }
 
     }
@@ -80,9 +85,9 @@ class DashBoardActivity : AppCompatActivity() {
 
         // on below line we are creating a variable for our button
         // which we are using to dismiss our dialog.
-        var btnConfirm = bottomView.findViewById<MaterialButton>(R.id.Btn_Confirm)
-        var campoAtividade = bottomView.findViewById<TextInputEditText>(R.id.EdtAtividade)
-        var layoutWarehouse = bottomView.findViewById<TextInputLayout>(R.id.txtInputActivityName)
+        val btnConfirm = bottomView.findViewById<MaterialButton>(R.id.Btn_Confirm)
+        val campoAtividade = bottomView.findViewById<TextInputEditText>(R.id.EdtAtividade)
+        val layoutWarehouse = bottomView.findViewById<TextInputLayout>(R.id.txtInputActivityName)
 
 
 
@@ -91,7 +96,7 @@ class DashBoardActivity : AppCompatActivity() {
         btnConfirm.setOnClickListener {
             // on below line we are calling a dismiss
             // method to close our dialog.
-            var nomeAtividade = campoAtividade.text.toString()
+            val nomeAtividade = campoAtividade.text.toString()
             if(nomeAtividade.isEmpty()){
                 layoutWarehouse.error = "Campo vazio"
             }else {
@@ -129,6 +134,12 @@ class DashBoardActivity : AppCompatActivity() {
             startActivity(intent)
         })
 
+    }
+
+    fun logOut(){
+        authenticationViewModel.signOut()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 
 }
