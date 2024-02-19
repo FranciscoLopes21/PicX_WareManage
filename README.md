@@ -17,4 +17,4 @@
      - Exportar atividades entre datas escolhidas pelo utilizador
   - Criar Notas (Feature)
      - Criar pequena aplicação dentro da WareManage
-     - titulo, descrição, data lembrete
+     <!--- titulo, descrição, data lembrete-->
