@@ -9,10 +9,11 @@
      - Adicionar produtos ao armazém
      - notificar produto abaixo do stock minimo
   - Produtos
-     - notificar produto abaixo do stock minimo
+     - Crud
+     - Atualizar stock
   - Atividades
      - adicionar produtos a atividade
-     - ver lista de produtos
+     - ver lista de produtos associados
      - retirar produtos da lista
   - Exportar Excel 
      - Exportar atividades 
